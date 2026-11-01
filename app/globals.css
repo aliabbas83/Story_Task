@@ -91,3 +91,9 @@ button { font: inherit; cursor: pointer; }
   h1 { font-size: 1.6rem; }
   .portrait { width: 60px; height: 60px; }
 }
+.intro { text-align: center; }
+.intro .portrait { width: 150px; height: 150px; margin: 8px auto 4px; display: block; }
+.intro h2.chapter { font-weight: normal; font-size: 1.3rem; margin: 6px 0 14px; }
+.intro .text { text-align: start; }
+.intro .text + .text::first-letter { float: none; font-size: inherit; padding: 0; color: inherit; font-weight: inherit; }
+.intro .primary { margin-top: 14px; }

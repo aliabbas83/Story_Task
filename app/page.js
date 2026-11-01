@@ -11,6 +11,13 @@ const T = {
     end: "The End", again: "Tell another story", retry: "Retry",
     read: "Read it to me", pause: "Pause", resume: "Resume", stop: "Stop", noVoice: "Your browser has no voice for this language.",
     speech: "en-US", chapter: "Page", hero: "Mohammed Al-Sharekh",
+    introHead: "Introduction",
+    intro: [
+      "Long before phones spoke every language, computers spoke only one. Their keyboards, screens and programs were built for English letters, and Arabic had no place on them.",
+      "In the early 1980s, a Kuwaiti dreamer named Mohammed Al-Sharekh set out to change that. He founded Sakhr, whose computers and programs taught the machine to read and write in Arabic, and a whole generation of Arab children met the computer age in their own language.",
+      "The story you are about to read is imagined, inspired by his journey. You will walk in his footsteps, and at every turn of the page, you choose what happens next.",
+    ],
+    turn: "Turn the page →",
   },
   ar: {
     title: "كويتي من المستقبل",
@@ -21,6 +28,13 @@ const T = {
     end: "النهاية", again: "احكِ قصة أخرى", retry: "إعادة المحاولة",
     read: "اقرأها لي", pause: "إيقاف مؤقت", resume: "استئناف", stop: "إيقاف", noVoice: "متصفحك لا يملك صوتاً لهذه اللغة.",
     speech: "ar-SA", chapter: "صفحة", hero: "محمد الشارخ",
+    introHead: "المقدمة",
+    intro: [
+      "قبل زمن طويل من الهواتف التي تتحدث كل اللغات، كانت الحواسيب لا تعرف إلا لغة واحدة. صُنعت لوحات مفاتيحها وشاشاتها وبرامجها للحروف الإنجليزية، ولم يكن للعربية مكان فيها.",
+      "في مطلع الثمانينيات، قرر حالم كويتي اسمه محمد الشارخ أن يغيّر ذلك. فأسس شركة صخر، التي علّمت حواسيبها وبرامجها الآلة أن تقرأ وتكتب بالعربية، فالتقى جيل كامل من الأطفال العرب بعصر الحاسوب بلغتهم.",
+      "القصة التي ستقرؤها متخيَّلة، مستوحاة من رحلته. ستسير على خطاه، وعند كل صفحة تختار أنت ما سيحدث بعد ذلك.",
+    ],
+    turn: "← اقلب الصفحة",
   },
 };
 
@@ -53,6 +67,7 @@ const pageNumber = (n, lang) => (lang === "ar" ? n.toLocaleString("ar-EG") : Str
 export default function Home() {
   const [lang, setLang] = useState("en");
   const [spark, setSpark] = useState("");
+  const [showIntro, setShowIntro] = useState(true);
   const [started, setStarted] = useState(false);
   const [scenes, setScenes] = useState([]); // {scene, image, choice?}
   const [choices, setChoices] = useState([]);
@@ -125,7 +140,17 @@ export default function Home() {
         <button className={lang === "en" ? "on" : ""} onClick={() => switchLang("en")}>English</button>
         <button className={lang === "ar" ? "on" : ""} onClick={() => switchLang("ar")}>العربية</button>
       </div>
-      {!started ? (
+      {showIntro ? (
+        <section className="page intro">
+          <Portrait alt={t.hero} />
+          <h1>{t.title}</h1>
+          <div className="flourish">❦</div>
+          <h2 className="chapter">{t.introHead}</h2>
+          {t.intro.map((p) => <p key={p} className="text">{p}</p>)}
+          <button className="primary" onClick={() => setShowIntro(false)}>{t.turn}</button>
+          <footer className="pagenum">— {lang === "ar" ? "أ" : "i"} —</footer>
+        </section>
+      ) : !started ? (
         <section className="page cover">
           <Portrait alt={t.hero} />
           <h1>{t.title}</h1>
