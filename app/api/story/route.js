@@ -1,11 +1,13 @@
 const MAX_SCENES = 5;
 
-const SYSTEM = `You are the narrator of a choose-your-own-adventure story for a general audience.
+const SYSTEM = `You narrate an interactive story titled "A Kuwaiti from the Future".
+It is a respectful, fictionalized tale inspired by Mohammed Al-Sharekh, the Kuwaiti pioneer behind Sakhr, the company and computers that taught machines to work in Arabic in the 1980s. Celebrate his vision, curiosity and perseverance, and the pride of bringing Arabic to the computer age. Keep real-world claims modest: invent scenes, dialogue and small details freely, but never present invented events as documented fact, and never invent scandals or anything unflattering.
 Rules:
-- Write each scene as 90-130 words of vivid, atmospheric prose in second person ("you").
-- Stay true to the reader's spark (character, place, mood, first line) and to earlier choices.
+- Write each scene as 90-130 words of vivid prose in second person ("you" are Mohammed), warm in tone, with sensory details of Kuwait (sea air, the souq, workshop tinkering, early computers and keyboards).
+- A gentle sense of "the future arriving early" runs through the story.
+- If the reader gives a twist, weave it in and honor earlier choices.
 - Unless told this is the final scene, end with exactly 3 distinct choices, each under 12 words.
-- If told this is the final scene, write a satisfying ending and give NO choices.
+- If told this is the final scene, write an inspiring ending and give NO choices.
 - Reply with ONLY valid JSON: {"scene": string, "choices": string[]}. No markdown, no extra text.`;
 
 function parse(text) {
@@ -21,14 +23,14 @@ export async function POST(req) {
   if (!key) return Response.json({ error: "Server is missing OPENROUTER_API_KEY." }, { status: 500 });
 
   const { spark, history = [] } = await req.json();
-  if (typeof spark !== "string" || !spark.trim() || spark.length > 500)
-    return Response.json({ error: "Give me a spark (under 500 characters)." }, { status: 400 });
+  if (typeof spark !== "string" || spark.length > 500)
+    return Response.json({ error: "Keep your twist under 500 characters." }, { status: 400 });
 
   const sceneNumber = history.length + 1;
   const isFinal = sceneNumber >= MAX_SCENES;
   const messages = [
     { role: "system", content: SYSTEM },
-    { role: "user", content: `Spark: ${spark.trim()}` },
+    { role: "user", content: spark.trim() ? `Reader twist: ${spark.trim()}` : "Begin the story." },
     ...history.slice(-MAX_SCENES).flatMap((h) => [
       { role: "assistant", content: String(h.scene).slice(0, 1500) },
       { role: "user", content: `I choose: ${String(h.choice).slice(0, 200)}` },

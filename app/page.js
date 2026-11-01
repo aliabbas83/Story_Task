@@ -2,9 +2,9 @@
 import { useState, useRef, useEffect } from "react";
 
 const IDEAS = [
-  "A lighthouse keeper who finds a door in the sea, spooky",
-  "A tiny dragon afraid of fire, in a busy bakery, cozy",
-  "Last bus to Mars. First line: 'Nobody told me about the dog.'",
+  "It begins in a small Kuwait workshop at night",
+  "A mysterious visitor arrives carrying a glowing keyboard",
+  "The first Arabic letters appear on the screen",
 ];
 
 export default function Home() {
@@ -35,7 +35,7 @@ export default function Home() {
     setLoading(false);
   }
 
-  const start = () => spark.trim() && next([], spark);
+  const start = () => next([], spark);
   const pick = (c) => {
     const history = scenes.map((s, i) => (i === scenes.length - 1 ? { ...s, choice: c } : s));
     setScenes(history);
@@ -47,13 +47,13 @@ export default function Home() {
 
   return (
     <main>
-      <h1>Story Machine</h1>
+      <h1>A Kuwaiti from the Future</h1>
       {!started ? (
         <section>
-          <p className="sub">Give me a spark: a character, a place, a mood, a first line. We will walk the story together.</p>
-          <textarea value={spark} maxLength={500} onChange={(e) => setSpark(e.target.value)} placeholder="A sleepy fox detective in a rainy city..." rows={4} />
+          <p className="sub">An interactive story inspired by Mohammed Al-Sharekh, who helped teach the computer to speak Arabic. Add a twist of your own, or just begin.</p>
+          <textarea value={spark} maxLength={500} onChange={(e) => setSpark(e.target.value)} placeholder="Add a twist (optional)..." rows={4} />
           <div className="ideas">{IDEAS.map((i) => <button key={i} className="chip" onClick={() => setSpark(i)}>{i}</button>)}</div>
-          <button className="primary" onClick={start} disabled={loading || !spark.trim()}>{loading ? "Weaving your story..." : "Begin the story"}</button>
+          <button className="primary" onClick={start} disabled={loading}>{loading ? "Weaving your story..." : "Begin the story"}</button>
         </section>
       ) : (
         <section>
