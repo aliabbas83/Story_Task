@@ -8,28 +8,28 @@ Rules:
 - If the reader gives a twist, weave it in and honor earlier choices.
 - Unless told this is the final scene, end with exactly 3 distinct choices, each under 12 words.
 - If told this is the final scene, write an inspiring ending and give NO choices.
-- Reply with ONLY valid JSON: {"scene": string, "choices": string[]}. No markdown, no extra text.`;
+- Reply with ONLY valid JSON: {"scene": string, "choices": string[], "image": string}. "image" is always in ENGLISH: one short sentence (under 25 words) describing the scene as an illustration, painterly, warm light, no text in the picture. No markdown, no extra text.`;
 
 function parse(text) {
   const match = text.match(/\{[\s\S]*\}/);
   if (!match) throw new Error("no json");
   const data = JSON.parse(match[0]);
   if (typeof data.scene !== "string") throw new Error("bad shape");
-  return { scene: data.scene, choices: Array.isArray(data.choices) ? data.choices.slice(0, 3).map(String) : [] };
+  return { scene: data.scene, image: typeof data.image === "string" ? data.image.slice(0, 300) : "", choices: Array.isArray(data.choices) ? data.choices.slice(0, 3).map(String) : [] };
 }
 
 export async function POST(req) {
   const key = process.env.OPENROUTER_API_KEY;
   if (!key) return Response.json({ error: "Server is missing OPENROUTER_API_KEY." }, { status: 500 });
 
-  const { spark, history = [] } = await req.json();
+  const { spark, history = [], lang = "en" } = await req.json();
   if (typeof spark !== "string" || spark.length > 500)
     return Response.json({ error: "Keep your twist under 500 characters." }, { status: 400 });
 
   const sceneNumber = history.length + 1;
   const isFinal = sceneNumber >= MAX_SCENES;
   const messages = [
-    { role: "system", content: SYSTEM },
+    { role: "system", content: SYSTEM + (lang === "ar" ? "\nWrite the scene and the choices in natural, elegant Modern Standard Arabic. Keep the JSON keys and the \"image\" value in English." : "\nWrite in English.") },
     { role: "user", content: spark.trim() ? `Reader twist: ${spark.trim()}` : "Begin the story." },
     ...history.slice(-MAX_SCENES).flatMap((h) => [
       { role: "assistant", content: String(h.scene).slice(0, 1500) },

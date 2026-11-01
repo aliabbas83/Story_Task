@@ -19,3 +19,9 @@ button { font: inherit; cursor: pointer; }
 .error { color: #ff9b9b; text-align: center; }
 @keyframes fade { from { opacity: 0; transform: translateY(6px); } }
 @keyframes pulse { 50% { opacity: .4; } }
+.langs { display: flex; gap: 8px; justify-content: center; margin-bottom: 8px; }
+.langs button { background: transparent; color: #b9aed0; border: 1px solid #3a2f57; border-radius: 999px; padding: 4px 14px; }
+.langs .on { background: #f2c46d; color: #14101f; border-color: #f2c46d; }
+.pic { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 12px; background: #1d1730; margin-bottom: 12px; }
+.voice { display: flex; gap: 8px; margin: 4px 0 8px; }
+.choice { text-align: start; }
