@@ -33,11 +33,11 @@ function pictureUrl(prompt, seed, w = 768, h = 432) {
   return `https://image.pollinations.ai/prompt/${p}?width=${w}&height=${h}&nologo=true&seed=${seed}`;
 }
 
-// Drop your own photo at public/mohammed.jpg to use it; otherwise an illustrated portrait is used.
+// Drop your own photo at public/mohammed.png to use it; otherwise an illustrated portrait is used.
 const PORTRAIT_FALLBACK = pictureUrl(`head and shoulders portrait of ${HERO}, bareheaded, thoughtful gentle smile, oval vignette`, 1942, 320, 320);
 
 function Portrait({ alt }) {
-  const [src, setSrc] = useState("/mohammed.jpg");
+  const [src, setSrc] = useState("/mohammed.png");
   const img = useRef(null);
   const fallback = () => src !== PORTRAIT_FALLBACK && setSrc(PORTRAIT_FALLBACK);
   // The photo can fail before React attaches onError (server-rendered), so check once on mount too.

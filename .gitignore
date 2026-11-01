@@ -3,3 +3,7 @@ node_modules
 .env
 .env.*
 !.env.example
+
+# Photo from an Al Jazeera poster: used locally, not published
+public/mohammed.png
+/Screenshot*.png

@@ -41,7 +41,7 @@ h1 { text-align: center; font-weight: normal; letter-spacing: .06em; color: var(
 .cover .portrait { width: 150px; height: 150px; margin: 8px auto 4px; display: block; }
 
 .portrait {
-  width: 76px; height: 76px; object-fit: cover; border-radius: 50%;
+  width: 76px; height: 76px; object-fit: cover; object-position: 50% 32%; border-radius: 50%;
   border: 3px solid var(--gold); box-shadow: 0 0 0 3px var(--paper), 0 0 0 5px rgba(138,59,30,.4), 0 4px 10px rgba(0,0,0,.25);
   background: var(--paper-edge);
 }
